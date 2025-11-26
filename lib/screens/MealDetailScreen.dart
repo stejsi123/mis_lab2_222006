@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lab2_222006/models/meal.dart';
 import 'package:flutter_lab2_222006/models/meal_deatil.dart';
 import 'package:flutter_lab2_222006/services/meal_api_service.dart';
+import 'package:flutter_lab2_222006/widgets/ingridients_detail.dart';
+import 'package:flutter_lab2_222006/widgets/instructions_detail.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
@@ -47,6 +49,17 @@ class _MealdetailscreenState extends State<Mealdetailscreen> {
   }
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  if (_error != null || _detail == null) {
+    return Scaffold(
+      body: Center(child: Text('Failed to load meal details')),
+    );
+  }
     final detail=_detail!;
     return Scaffold(
       body:
@@ -111,39 +124,9 @@ class _MealdetailscreenState extends State<Mealdetailscreen> {
             
             ),
             
-            Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-  child: Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      boxShadow: [
-        BoxShadow(
-          color:  Color(0xFF4D0013),
-          blurRadius: 8,
-          offset: Offset(0, 4),
-        ),
-      ],
-    ),
-    child: Text(
-      detail.instructions,
-      style: GoogleFonts.oranienbaum(
-        fontSize: 16,
-        height: 1.4,
-      ),
-    ),
-  ),
-),
+            InstructionsCard(detail: detail),
 
-Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-  child: Text('INGREDIENTS',
-  style: GoogleFonts.libreCaslonText(
-    fontSize: 22,
-    fontWeight:FontWeight.bold
-  ),),
-),
+IngerdientsList(),
 SizedBox(height: 10),
 Column(
   crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,3 +170,4 @@ Column(
     );
   }
 }
+
