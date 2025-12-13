@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lab2_222006/models/category.dart';
 import 'package:flutter_lab2_222006/models/meal.dart';
-import 'package:flutter_lab2_222006/screens/MealDetailScreen.dart';
 import 'package:flutter_lab2_222006/services/meal_api_service.dart';
 import 'package:flutter_lab2_222006/widgets/appbar.dart';
 import 'package:flutter_lab2_222006/widgets/meal_grid.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_lab2_222006/screens/Favorites.dart';
+
 
 class CategoryDetailsScreen extends StatefulWidget {
   final MealCategory category;
@@ -23,6 +24,20 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
   List<Meal> _filteredMeals = [];
   bool _isLoading = true;
   String? _error;
+  final Set<String>_favoriteMealIds={};
+bool _isFavorite(Meal meal) => _favoriteMealIds.contains(meal.id);
+  void _toggleFavorite(Meal meal) {
+    setState(() {
+      if (_favoriteMealIds.contains(meal.id)) {
+        _favoriteMealIds.remove(meal.id);
+      } else {
+        _favoriteMealIds.add(meal.id);
+      }
+    });
+  }
+    List<Meal> get _favoriteMeals =>
+      _meals.where((m) => _favoriteMealIds.contains(m.id)).toList();
+
 
   @override
   void initState() {
@@ -107,6 +122,11 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
              fontWeight: FontWeight.bold
              ),
              ),
+             actions: [
+              IconButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder:(_) =>FavoriteMealScreen(favoriteMeals: _favoriteMeals),));
+              }, icon:Icon(Icons.favorite))
+             ],
           ),
         ),
       ),
@@ -125,7 +145,9 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             ),
           ),
           SizedBox(height:10),
-            GridViewWidget(filteredMeals: _filteredMeals),
+            GridViewWidget(filteredMeals: _filteredMeals,
+            onToggleFavorite: _toggleFavorite,
+            isFavorite:_isFavorite),
               
         ],
             

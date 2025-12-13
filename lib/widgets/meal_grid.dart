@@ -5,11 +5,17 @@ import 'package:google_fonts/google_fonts.dart';
 
 class GridViewWidget extends StatelessWidget {
   const GridViewWidget({
+
     super.key,
     required List<Meal> filteredMeals,
+    required this.onToggleFavorite,
+    required this.isFavorite,
   }) : _filteredMeals = filteredMeals;
 
   final List<Meal> _filteredMeals;
+  final void Function(Meal) onToggleFavorite; 
+  final bool Function(Meal) isFavorite;
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +101,15 @@ class GridViewWidget extends StatelessWidget {
       Text('Cook', style: GoogleFonts.libreCaslonDisplay(fontSize:13, fontWeight: FontWeight.w700)),
     ],
               ),
-              Column(
-    children: [
-      Icon(Icons.favorite_border_outlined, size: 17),
-      SizedBox(height: 2),
-      Text('Favorite', style: GoogleFonts.libreCaslonDisplay(fontSize: 13, fontWeight: FontWeight.w700)),
-    ],
+              InkWell(
+                onTap: ()=>onToggleFavorite(meal),
+                child: Column(
+                    children: [
+                      Icon(Icons.favorite_border_outlined, size: 17),
+                      SizedBox(height: 2),
+                      Text('Favorite', style: GoogleFonts.libreCaslonDisplay(fontSize: 13, fontWeight: FontWeight.w700)),
+                    ],
+                ),
               ),
               Column(
     children: [

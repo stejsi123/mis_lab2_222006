@@ -5,6 +5,7 @@ import 'package:flutter_lab2_222006/screens/MealDetailScreen.dart';
 import 'package:flutter_lab2_222006/services/meal_api_service.dart';
 import 'package:flutter_lab2_222006/widgets/appbar.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 class TheMeal extends StatefulWidget {
   const TheMeal({super.key});
 
